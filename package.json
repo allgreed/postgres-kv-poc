@@ -1,0 +1,9 @@
+{
+  "name": "postgres-kv",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^7.11.0"
+  }
+}

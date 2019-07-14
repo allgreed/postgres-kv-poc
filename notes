@@ -1,0 +1,38 @@
+- further improve the API of error handling
+- move SQL queries to seperate files
+- git repo + initial commit + publish + let maciejbl now
+
+- heh sql injections? // https://node-postgres.com/features/queries#parameterized-query
+- commit
+
+- use JSONb under the hood // https://node-postgres.com/features/types#uuid-json-jsonb
+
+- add extensive tests (ideally property based)
+- commit + README, LICENSE + publish on Github
+
+- add Redis kv implementation (in benchmakr)
+- make it pass the tests
+- commit
+
+- design a performance test upon an API
+- do a benchmark (few use cases, ideally fully automated)
+- commit
+
+- do a performance test of current implementation
+
+Optimize (do a performance tests after each):
+- LIMIT 1 to select query (does it work on update query as well?)
+- where like vs where = 
+- with hash index on key
+- use connection pool // https://node-postgres.com/features/pooling
+- use prepared statements // https://node-postgres.com/features/queries#prepared-statements
+- using row mode to get few milis on the parser //  https://node-postgres.com/features/queries#row-mode
+- using native client // https://node-postgres.com/features/native
+- upsert maybe? // http://www.postgresqltutorial.com/postgresql-upsert/
+
+
+https://node-postgres.com/features/queries#types <- for supporting non-string types
+
+- Maybe have some fun with multithreading? :D (running more than a single kv instance)
+
+- Migrate to cocroachDB
