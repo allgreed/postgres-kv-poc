@@ -1,16 +1,28 @@
 - further improve the API of error handling
-- move SQL queries to seperate files
-- git repo + initial commit + publish + let maciejbl now
+- move SQL queries to seperate files || use differnt syntax highlighting for parts of file and document it
+- commit
 
 - heh sql injections? // https://node-postgres.com/features/queries#parameterized-query
 - commit
 
 - use JSONb under the hood // https://node-postgres.com/features/types#uuid-json-jsonb
 
-- add extensive tests (ideally property based)
-- commit + README, LICENSE + publish on Github
+- add extensive tests (ideally property based - no idea is there a point to test it in other way)
+- commit
+
+- handle missing db
+- handle db starting up
+- commit
+
+- add README & LICENSE (WTFPL)
+- document direnv
+- commit 
+
+- add Makefile + document it
+- commit
 
 - add Redis kv implementation (in benchmakr)
+- https://www.npmjs.com/package/redis-json
 - make it pass the tests
 - commit
 
@@ -21,6 +33,7 @@
 - do a performance test of current implementation
 
 Optimize (do a performance tests after each):
+- first try update, than try inser ton set
 - LIMIT 1 to select query (does it work on update query as well?)
 - where like vs where = 
 - with hash index on key
