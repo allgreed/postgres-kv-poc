@@ -2,12 +2,9 @@
 
 # Porcelain
 # ###############
-.PHONY: env-up env-down serve ci build lint test container
+.PHONY: env-up env-down env-recreate ci build lint test
 
-serve: setup ## run the development server
-	@echo "Not implemented"; false
-
-ci: setup lint test build container ## run all tests and build all artifacts
+ci: setup lint test build ## run all tests and build all artifacts
 	@echo "Not implemented"; false
 
 env-up: ## set up dev environment
@@ -27,16 +24,15 @@ lint: ## run static analysis
 test: setup ## run all tests
 	@echo "Not implemented"; false
 
-container: ## build container
-	@echo "Not implemented"; false
-
 
 # Plumbing
 # ###############
 .PHONY: setup
 
-setup:
-	@echo "Not implemented"; false
+setup: node_modules	
+
+node_modules: package.json yarn.lock
+	yarn install --frozen-lockfile
 
 
 # Utilities
