@@ -1,5 +1,4 @@
 - use JSONb under the hood // https://node-postgres.com/features/types#uuid-json-jsonb
-
 - add delete (along the null semantics)
 - commit
 

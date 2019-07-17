@@ -1,11 +1,10 @@
 const { Client } = require("pg")
 
 const Queries = require("./queries")
+const Utilities = require("./utilities")
 
 
-const mapObjectKeys = (fn, obj) => Object.assign(...Object.entries(obj).map(([k, v]) => ({[k]: fn(v)})));
-
-const makeQueryRunner = initializedCursor => query => initializedCursor.query(query);
+const makeLazyQueryRunner = initializedCursor => query => () => initializedCursor.query(query);
 
 const makeErrorHandler = kv => handlers =>
     err =>
@@ -31,12 +30,24 @@ const makeErrorHandler = kv => handlers =>
     process.exit(1)
 }
 
+const recoverFromMissingTableAndThen = (kv, runQuery, continuation) =>
+({
+    code: "42P01",
+    action: () => runQuery(kv.queries.create_table())().then(continuation),
+})
+
+const catchDuplicateKeyAndThen = continuation =>
+({
+    code: "23505",
+    action: continuation,
+})
+
 
 class KV
 {
     constructor()
     {
-        this.queries = mapObjectKeys(q => q("kv"), Queries)
+        this.queries = Utilities.mapObjectKeys(q => q("kv"), Queries)
         this.makeErrorHandler = makeErrorHandler(this);
     }
 
@@ -51,17 +62,11 @@ class KV
         await client.connect()
             //.catch(fatalError);
 
-        const runQuery = makeQueryRunner(client);
+        const runQuery = makeLazyQueryRunner(client);
 
-        const recoverFromMissingTableAndThen = continuation =>
-        ({
-            code: "42P01",
-            action: () => runQuery(this.queries.create_table()).then(continuation),
-        })
-
-        const DBResponse = await runQuery(this.queries.get(key))
+        const DBResponse = await runQuery(this.queries.get(key))()
             .catch(this.makeErrorHandler([
-                recoverFromMissingTableAndThen(() => runQuery(this.queries.get())),
+                recoverFromMissingTableAndThen(this, runQuery, runQuery(this.queries.get())),
             ]))
 
         const value = DBResponse.rows[0] ?
@@ -78,24 +83,12 @@ class KV
         await client.connect()
             //.catch(pgErrorPanicOnFailure);
         
-        const runQuery = makeQueryRunner(client);
+        const runQuery = makeLazyQueryRunner(client);
             
-        const recoverFromMissingTableAndThen = continuation =>
-        ({
-            code: "42P01",
-            action: () => runQuery(this.queries.create_table()).then(continuation),
-        })
-
-        const catchDuplicateKeyAndThen = continuation =>
-        ({
-            code: "23505",
-            action: continuation,
-        })
-
-        const DBResponse = await runQuery(this.queries.set_create(k, v))
+        const DBResponse = await runQuery(this.queries.set_create(k, v))()
             .catch(this.makeErrorHandler([
-                recoverFromMissingTableAndThen(() => runQuery(this.queries.set_create(k, v))),
-                catchDuplicateKeyAndThen(() => runQuery(this.queries.set_update(k, v))),
+                recoverFromMissingTableAndThen(this, runQuery, runQuery(this.queries.set_create(k, v))),
+                catchDuplicateKeyAndThen(runQuery(this.queries.set_update(k, v))),
             ]))
 
         await client.end()

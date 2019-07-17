@@ -1,5 +1,4 @@
-const { Client } = require("pg")
-const KV = require("./kv-pg")
+const KV = require("./src/kv-pg")
 
 
 async function main()
