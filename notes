@@ -1,11 +1,9 @@
-- further improve the API of error handling
-- move SQL queries to seperate files || use differnt syntax highlighting for parts of file and document it
-- commit
-
-- heh sql injections? // https://node-postgres.com/features/queries#parameterized-query
-- commit
-
+- add delete
 - use JSONb under the hood // https://node-postgres.com/features/types#uuid-json-jsonb
+- commit
+
+- parametrize PGDB name, kvDB name and owner
+- commit
 
 - add extensive tests (ideally property based - no idea is there a point to test it in other way)
 - commit
