@@ -94,6 +94,11 @@ class KV
         await client.end()
     }
 
+    async remove(k)
+    {
+        this.set(k, null);
+    }
+
     async teardown()
     {
         console.log("Tearing down kv store");

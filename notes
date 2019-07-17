@@ -1,14 +1,12 @@
-- use JSONb under the hood // https://node-postgres.com/features/types#uuid-json-jsonb
-- add delete (along the null semantics)
-- commit
-
 - parametrize PGDB name, kvDB name and owner - connection string, extract owner from the currently created user
 - commit
 
 - add extensive tests (ideally property based - no idea is there a point to test it in other way)
 - commit
 
-- make npm package? :D
+- document the fact that keys are strings, and values are arbitrary jsons - maybe types? :D
+- document the null semantics - putting null is the same as deleting a key
+- add cleanup query
 
 - handle missing db
 - handle db starting up
@@ -20,6 +18,8 @@
 
 - add Makefile + document it
 - commit
+
+- make npm package? :D
 
 - add Redis kv implementation (in benchmakr)
 - https://www.npmjs.com/package/redis-json
