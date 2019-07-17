@@ -7,7 +7,7 @@ const mapObjectKeys = (fn, obj) => Object.assign(...Object.entries(obj).map(([k,
 
 const makeQueryRunner = initializedCursor => query => initializedCursor.query(query);
 
-const makeErrorHandler = handlers =>
+const makeErrorHandler = kv => handlers =>
     err =>
 {
     for (const handler of handlers)
@@ -22,9 +22,12 @@ const makeErrorHandler = handlers =>
         }
     }
 
-    consle.error(`Unhandled error: ${err.code}`);
     console.error(err.stack);
-    consle.error("exiting!");
+    console.error(`\nerror code: ${err.code}`);
+
+    kv.teardown();
+
+    console.error("exiting!");
     process.exit(1)
 }
 
@@ -34,11 +37,12 @@ class KV
     constructor()
     {
         this.queries = mapObjectKeys(q => q("kv"), Queries)
+        this.makeErrorHandler = makeErrorHandler(this);
     }
 
     async init()
     {
-        
+        console.log("Initializing kv store");
     }
 
     async get(key)
@@ -56,7 +60,7 @@ class KV
         })
 
         const DBResponse = await runQuery(this.queries.get(key))
-            .catch(makeErrorHandler([
+            .catch(this.makeErrorHandler([
                 recoverFromMissingTableAndThen(() => runQuery(this.queries.get())),
             ]))
 
@@ -89,7 +93,7 @@ class KV
         })
 
         const DBResponse = await runQuery(this.queries.set_create(k, v))
-            .catch(makeErrorHandler([
+            .catch(this.makeErrorHandler([
                 recoverFromMissingTableAndThen(() => runQuery(this.queries.set_create(k, v))),
                 catchDuplicateKeyAndThen(() => runQuery(this.queries.set_update(k, v))),
             ]))
@@ -99,7 +103,7 @@ class KV
 
     async teardown()
     {
-
+        console.log("Tearing down kv store");
     }
 }
 
