@@ -1,35 +1,37 @@
-const KV = require("./src/kv-pg")
+const KV = require("./src")
 
+async function setgetlog(kv, key, value)
+{
+    await kv.set(key, value) 
+
+    const v = await kv.get(key)
+
+    console.log(v);
+}
 
 async function main()
 {
-   const kv = new KV(); 
-   await kv.init()
+    const kv = new KV({
+        name: "keyvalue"
+    }); 
+    await kv.init()
 
-   await kv.set("siemano", {do_kogo: "mordo"}) 
+    await setgetlog(kv, "siemano", {do_kogo: "mordo"}) 
+    await setgetlog(kv, "siemano", {do_kogo: "typie"}) 
 
-   const va = await kv.get("siemano")
-   console.log(va);
+    await kv.remove("siemano") 
 
-   await kv.set("siemano", {do_kogo: "typie"}) 
+    const val = await kv.get("siemano")
+    console.log(val);
 
-   const val = await kv.get("siemano")
-   console.log(val);
+    await setgetlog(kv, "none", undefined) 
 
-   await kv.set("none", undefined) 
-   
-   const v = await kv.get("none")
-   console.log(v);
+    await setgetlog(kv, "empty", {}) 
 
-   await kv.set("empty", {}) 
-   
-   const valuev = await kv.get("empty")
-   console.log(valuev);
+    const value = await kv.get("this-key-does-not-exists")
+    console.log(value);
 
-   const value = await kv.get("this-key-does-not-exists")
-   console.log(value);
-
-   await kv.teardown()
+    await kv.teardown()
 }
 
 main()

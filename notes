@@ -1,15 +1,18 @@
-- parametrize PGDB name, kvDB name and owner - connection string, extract owner from the currently created user
+- add extensive tests (ideally property based - no idea is there a point to test it in other way)
 - commit
 
-- add extensive tests (ideally property based - no idea is there a point to test it in other way)
+============
+
+- handle missing db
+- handle db starting up
 - commit
 
 - document the fact that keys are strings, and values are arbitrary jsons - maybe types? :D
 - document the null semantics - putting null is the same as deleting a key
 - add cleanup query
+- commit
 
-- handle missing db
-- handle db starting up
+- parametrize PGDB name - connection string
 - commit
 
 - add README & LICENSE (WTFPL)
@@ -20,6 +23,8 @@
 - commit
 
 - make npm package? :D
+
+============
 
 - add Redis kv implementation (in benchmakr)
 - https://www.npmjs.com/package/redis-json
@@ -32,6 +37,8 @@
 
 - do a performance test of current implementation
 
+============
+
 Optimize (do a performance tests after each):
 - first try update, than try inser ton set
 - LIMIT 1 to select query (does it work on update query as well?)
@@ -43,9 +50,7 @@ Optimize (do a performance tests after each):
 - using native client // https://node-postgres.com/features/native
 - upsert maybe? // http://www.postgresqltutorial.com/postgresql-upsert/
 
-
-https://node-postgres.com/features/queries#types <- for supporting non-string types
+============
 
 - Maybe have some fun with multithreading? :D (running more than a single kv instance)
-
 - Migrate to cocroachDB

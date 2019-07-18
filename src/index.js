@@ -45,9 +45,13 @@ const catchDuplicateKeyAndThen = continuation =>
 
 class KV
 {
-    constructor()
+    constructor(config = {})
     {
-        this.queries = Utilities.mapObjectKeys(q => q("kv"), Queries)
+        let { name } = config;
+
+        name = name || "kv";
+
+        this.queries = Utilities.mapObjectKeys(q => q(name), Queries)
         this.makeErrorHandler = makeErrorHandler(this);
     }
 
@@ -77,7 +81,7 @@ class KV
         return value
     }
 
-    async set(k, v)
+    async set(key, value)
     {
         const client = new Client()
         await client.connect()
@@ -85,18 +89,18 @@ class KV
         
         const runQuery = makeLazyQueryRunner(client);
             
-        const DBResponse = await runQuery(this.queries.set_create(k, v))()
+        const DBResponse = await runQuery(this.queries.set_create(key, value))()
             .catch(this.makeErrorHandler([
-                recoverFromMissingTableAndThen(this, runQuery, runQuery(this.queries.set_create(k, v))),
-                catchDuplicateKeyAndThen(runQuery(this.queries.set_update(k, v))),
+                recoverFromMissingTableAndThen(this, runQuery, runQuery(this.queries.set_create(key, value))),
+                catchDuplicateKeyAndThen(runQuery(this.queries.set_update(key, value))),
             ]))
 
         await client.end()
     }
 
-    async remove(k)
+    async remove(key)
     {
-        this.set(k, null);
+        await this.set(key, null);
     }
 
     async teardown()

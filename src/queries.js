@@ -13,7 +13,7 @@ const set_update = db => (key, value) => ({
     values: [key, value],
 })
 
-const create_table = db => (pgdb, owner) =>
+const create_table = db => () =>
 ({
     text: `
     CREATE TABLE kv
@@ -23,7 +23,7 @@ const create_table = db => (pgdb, owner) =>
        value JSONB
     );
 
-    ALTER TABLE kv OWNER TO postgres;
+    ALTER TABLE kv OWNER TO CURRENT_USER;
     `,
     values: [],
 })
