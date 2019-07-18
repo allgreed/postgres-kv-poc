@@ -1,4 +1,5 @@
-const KV = require("./src")
+const { KV } = require("./src")
+
 
 async function setgetlog(kv, key, value)
 {
@@ -30,6 +31,13 @@ async function main()
 
     const value = await kv.get("this-key-does-not-exists")
     console.log(value);
+
+    await setgetlog(kv, " \\", {}) 
+
+    await setgetlog(kv, "", {}) 
+
+    await setgetlog(kv, "key", []) 
+    await setgetlog(kv, "keyy", [1,2,3]) 
 
     await kv.teardown()
 }

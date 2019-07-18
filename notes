@@ -1,18 +1,21 @@
-- add extensive tests (ideally property based - no idea is there a point to test it in other way)
+- fix deep input validation
+- fix the get + set of any object shall there be something to fix
+
+- add model based tests and see if the find anything interesting (different table between reruns?)
+- https://github.com/dubzzz/fast-check/blob/master/documentation/1-Guides/Tips.md
+
 - commit
 
 ============
 
 - handle missing db
 - handle db starting up
+- validate kv name as well?
 - commit
 
 - document the fact that keys are strings, and values are arbitrary jsons - maybe types? :D
 - document the null semantics - putting null is the same as deleting a key
-- add cleanup query
-- commit
-
-- parametrize PGDB name - connection string
+- should model validate keys?
 - commit
 
 - add README & LICENSE (WTFPL)
@@ -39,6 +42,8 @@
 
 ============
 
+- add an option to bypass validation
+
 Optimize (do a performance tests after each):
 - first try update, than try inser ton set
 - LIMIT 1 to select query (does it work on update query as well?)
@@ -49,6 +54,13 @@ Optimize (do a performance tests after each):
 - using row mode to get few milis on the parser //  https://node-postgres.com/features/queries#row-mode
 - using native client // https://node-postgres.com/features/native
 - upsert maybe? // http://www.postgresqltutorial.com/postgresql-upsert/
+
+============
+
+- add unit tests
+- add cleanup query (delte null keys)
+- parametrize PGDB name - connection string
+- commit
 
 ============
 

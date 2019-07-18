@@ -1,5 +1,7 @@
 .DEFAULT_GOAL := help
 
+NPM_BINARY_PREFIX := ./node_modules/.bin
+
 # Porcelain
 # ###############
 .PHONY: env-up env-down env-recreate ci build lint test
@@ -21,9 +23,14 @@ build: setup ## create artifact
 lint: ## run static analysis
 	@echo "Not implemented"; false
 
-test: setup ## run all tests
-	@echo "Not implemented"; false
+test: setup env-up ## run all tests
+	$(NPM_BINARY_PREFIX)/jest --detectOpenHandles
 
+
+# Scripts
+# ###############
+psql: ## connect to Postgres
+	psql -h localhost -U $$PGUSER
 
 # Plumbing
 # ###############
@@ -33,6 +40,7 @@ setup: node_modules
 
 node_modules: package.json yarn.lock
 	yarn install --frozen-lockfile
+	touch node_modules
 
 
 # Utilities

@@ -5,5 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "pg": "^7.11.0"
+  },
+  "devDependencies": {
+    "fast-check": "^1.16.0",
+    "jest": "^24.8.0"
   }
 }
