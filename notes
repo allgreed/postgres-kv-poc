@@ -1,9 +1,5 @@
-- fix deep input validation
-- fix the get + set of any object shall there be something to fix
-
 - add model based tests and see if the find anything interesting (different table between reruns?)
 - https://github.com/dubzzz/fast-check/blob/master/documentation/1-Guides/Tips.md
-
 - commit
 
 ============
@@ -13,7 +9,7 @@
 - validate kv name as well?
 - commit
 
-- document the fact that keys are strings, and values are arbitrary jsons - maybe types? :D
+- document the fact that input keys are strings, and values are objects that must serialize to JSON (except for some values)
 - document the null semantics - putting null is the same as deleting a key
 - should model validate keys?
 - commit
@@ -41,8 +37,6 @@
 - do a performance test of current implementation
 
 ============
-
-- add an option to bypass validation
 
 Optimize (do a performance tests after each):
 - first try update, than try inser ton set

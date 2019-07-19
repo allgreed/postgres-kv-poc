@@ -6,7 +6,7 @@ const { Validators, KV, Model } = require("src");
 const validKey = fc.string()
     .filter(s => Validators.validate_key(s))
 
-const validValue = fc.object()
+const validValue = fc.jsonObject()
     .filter(s => Validators.validate_value(s))
 
 
@@ -61,7 +61,7 @@ test("set and get any object with known key", async () => {
 
     await fc.assert(
         fc.asyncProperty(
-            fc.object(),
+            validValue,
             async (obj) => {
                 await kv.set("key", obj);
                 await kv_m.set("key", obj);
