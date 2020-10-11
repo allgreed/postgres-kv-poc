@@ -4,6 +4,7 @@
 
 ============
 
+- fix connecting to postgres and pass connection string / pass to new KV
 - handle missing db
 - handle db starting up
 - validate kv name as well?
@@ -27,7 +28,8 @@
 
 - add Redis kv implementation (in benchmakr)
 - https://www.npmjs.com/package/redis-json
-- make it pass the tests
+- write tests
+- see if it passes the tests
 - commit
 
 - design a performance test upon an API
